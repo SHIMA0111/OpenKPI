@@ -27,7 +27,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { useUser } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext.tsx';
 import { FaUser, FaUserTie, FaUserNinja, FaUserAstronaut, FaUserMd, FaUserGraduate } from 'react-icons/fa';
 
 // Define available avatar options

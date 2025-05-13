@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import './index.css'
 import App from './App.tsx'
-import { UserProvider } from './contexts/UserContext'
+import { UserProvider } from './contexts/UserContext.tsx'
 
 // Extend the theme to include custom colors, fonts, etc
 const colors = {

@@ -1,6 +1,6 @@
 import { Box, SimpleGrid, Text, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, Flex, Icon, useColorModeValue } from '@chakra-ui/react';
 import { FaChartBar, FaChartLine, FaChartPie } from 'react-icons/fa';
-import type { KPI } from '../services/kpiService';
+import type { KPI } from '../services/kpiService.ts';
 
 interface HomeViewProps {
   kpis: KPI[];

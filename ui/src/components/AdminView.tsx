@@ -30,9 +30,9 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { FaUser, FaUserTie, FaUserNinja, FaUserAstronaut, FaUserMd, FaUserGraduate, FaChartBar, FaChartLine, FaChartPie } from 'react-icons/fa';
-import { mockUsers } from '../contexts/UserContext';
-import { getAllKPIs, getUserKPIs, type KPI } from '../services/kpiService';
-import KPIPanel from './KPIPanel';
+import { mockUsers } from '../contexts/UserContext.tsx';
+import { getAllKPIs, getUserKPIs, type KPI } from '../services/kpiService.ts';
+import KPIPanel from './KPIPanel.tsx';
 
 // Define props for the component
 interface AdminViewProps {

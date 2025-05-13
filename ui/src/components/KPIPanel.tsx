@@ -13,7 +13,7 @@ import {
   Legend 
 } from 'chart.js';
 import { Bar, Line, Pie } from 'react-chartjs-2';
-import type { KPI } from '../services/kpiService';
+import type { KPI } from '../services/kpiService.ts';
 
 // Register ChartJS components
 ChartJS.register(

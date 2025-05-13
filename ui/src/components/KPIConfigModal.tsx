@@ -21,7 +21,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { AddIcon, DeleteIcon } from '@chakra-ui/icons';
-import type { KPI } from '../services/kpiService';
+import type { KPI } from '../services/kpiService.ts';
 
 // Define props for the component
 interface KPIConfigModalProps {

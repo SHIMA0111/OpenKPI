@@ -36,15 +36,15 @@ import {
   FaUserMd,
   FaUserGraduate
 } from 'react-icons/fa'
-import KPIConfigModal from './components/KPIConfigModal'
-import KPIPanel from './components/KPIPanel'
-import HomeView from './components/HomeView'
-import Login from './components/Login'
-import UserSettingsModal from './components/UserSettingsModal'
-import AdminView from './components/AdminView'
-import { useUser } from './contexts/UserContext'
-import {type KPI, getUserKPIs, addKPI as addUserKPI, deleteKPI as deleteUserKPI, initializeKPIs } from './services/kpiService'
-import { mockUsers } from './contexts/UserContext'
+import KPIConfigModal from './components/KPIConfigModal.tsx'
+import KPIPanel from './components/KPIPanel.tsx'
+import HomeView from './components/HomeView.tsx'
+import Login from './components/Login.tsx'
+import UserSettingsModal from './components/UserSettingsModal.tsx'
+import AdminView from './components/AdminView.tsx'
+import { useUser } from './contexts/UserContext.tsx'
+import {type KPI, getUserKPIs, addKPI as addUserKPI, deleteKPI as deleteUserKPI, initializeKPIs } from './services/kpiService.ts'
+import { mockUsers } from './contexts/UserContext.tsx'
 import './App.css'
 
 function App() {

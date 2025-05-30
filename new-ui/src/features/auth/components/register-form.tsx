@@ -9,6 +9,7 @@ import {
     Container,
     Field,
     FieldErrorText,
+    Grid,
     Heading,
     Icon,
     Input,
@@ -21,9 +22,11 @@ import {
 } from "@chakra-ui/react";
 import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiUser} from "react-icons/bi";
-import {LuCheck, LuDot, LuLock, LuMail, LuX} from 'react-icons/lu';
+import {LuCheck, LuDot, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
 
 function LoginFormContent() {
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
@@ -71,8 +74,8 @@ function LoginFormContent() {
                                 w={12}
                                 h={12}
                                 bgGradient="to-br"
-                                gradientFrom="blue.500"
-                                gradientTo="purple.500"
+                                gradientFrom="green.500"
+                                gradientTo="blue.500"
                                 borderRadius="xl"
                                 display="flex"
                                 alignItems="center"
@@ -86,16 +89,58 @@ function LoginFormContent() {
                                 bgClip="text"
                             >
                                 <Text as="span" color={textColor}>
-                                    Register
+                                    Create Account
                                 </Text>
                             </Heading>
-                            <Text color={textColor}>Please sign-up to your account!</Text>
+                            <Text color={textColor}>Let's create your account and start your journey!</Text>
                         </VStack>
                     </Card.Header>
                     <Card.Body>
                         <VStack gap={6}>
                             <Box as="form" onSubmit={handleSubmit} w="full">
                                 <Stack gap={4}>
+                                    <Grid templateColumns="repeat(2, 1fr)" gap={3}>
+                                        <Field.Root>
+                                            <Field.Label color={textColor}>
+                                                First Name
+                                            </Field.Label>
+                                            <InputGroup startElement={<LuUser color="gray.400" />}>
+                                                <Input 
+                                                    type="text" 
+                                                    placeholder="Taro" 
+                                                    value={firstName}
+                                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+                                                    h={12}
+                                                    borderColor="gray.200"
+                                                    focusRingColor="blue.500"
+                                                    _focus={{
+                                                        borderColor: "blue.500",
+                                                        boxShadow: "0 0 0 1px blue.500",
+                                                    }}
+                                                />
+                                            </InputGroup>
+                                        </Field.Root>
+                                        <Field.Root>
+                                            <Field.Label color={textColor}>
+                                                Last Name
+                                            </Field.Label>
+                                            <InputGroup startElement={<LuUser color="gray.400" />}>
+                                                <Input 
+                                                    type="text" 
+                                                    placeholder="Yamada" 
+                                                    value={lastName}
+                                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+                                                    h={12}
+                                                    borderColor="gray.200"
+                                                    focusRingColor="blue.500"
+                                                    _focus={{
+                                                        borderColor: "blue.500",
+                                                        boxShadow: "0 0 0 1px blue.500",
+                                                    }}
+                                                />
+                                            </InputGroup>
+                                        </Field.Root>
+                                    </Grid>
                                     <Field.Root required>
                                         <Field.Label color={textColor}>
                                             Email
@@ -180,8 +225,8 @@ function LoginFormContent() {
                                             }
                                             : {
                                                 bgGradient: "to-r",
-                                                gradientFrom: "blue.500",
-                                                gradientTo: "purple.500"
+                                                gradientFrom: "green.600",
+                                                gradientTo: "blue.600"
                                             }
                                         )}
                                         color="white"

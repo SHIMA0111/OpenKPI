@@ -23,22 +23,50 @@ import {
 import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiLock} from "react-icons/bi";
 import {LuEye, LuEyeOff, LuLock, LuMail} from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
+import { LoginCredentials } from '@/types/authentication';
+import { useAuthentication } from '@/hooks/use-authentication';
+import { signIn } from 'next-auth/react';
 
 function LoginFormContent() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
+    const router = useRouter();
 
-    const bgGradientFrom = useColorModeValue("gray.50", "gray.900")
-    const bgGradientTo = useColorModeValue("gray.100", "gray.800")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    const cardBg = useColorModeValue("white", "gray.800")
-    const textColor = useColorModeValue("gray.600", "gray.300")
+    const bgGradientFrom = useColorModeValue("gray.50", "gray.900");
+    const bgGradientTo = useColorModeValue("gray.100", "gray.800");
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log("submit")
-    }
+    const cardBg = useColorModeValue("white", "gray.800");
+    const textColor = useColorModeValue("gray.600", "gray.300");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        setIsLoading(true);
+
+        try {
+            const result = await signIn("credentials", {
+                email, 
+                password,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                setError("Invalid email or password");
+            } else {
+                router.push("/dashboard");
+                router.refresh();
+            }
+        } catch (error) {
+            setError("An error occurred. Please try again.");
+        } finally {
+            setIsLoading(true);
+        }
+    };
 
     return (
         <Box
@@ -158,6 +186,8 @@ function LoginFormContent() {
                                             </Link>
                                         </Flex>
                                         <Button 
+                                            loading={isLoading}
+                                            loadingText="Logging in..."
                                             type="submit" 
                                             w="full" 
                                             h={12}

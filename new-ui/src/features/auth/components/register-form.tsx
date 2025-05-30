@@ -22,7 +22,10 @@ import {
 } from "@chakra-ui/react";
 import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiUser} from "react-icons/bi";
-import {LuCheck, LuDot, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
+import {LuCheck, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
+import { RegisterCredentials } from '@/types/authentication';
+import { FirebaseError } from 'firebase/app';
+import { toaster } from '@/components/ui/toaster';
 
 function LoginFormContent() {
     const [firstName, setFirstName] = useState("")
@@ -38,9 +41,8 @@ function LoginFormContent() {
     const cardBg = useColorModeValue("white", "gray.800")
     const textColor = useColorModeValue("gray.600", "gray.300")
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log("submit")
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
     }
 
     const handleValidatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,8 +76,8 @@ function LoginFormContent() {
                                 w={12}
                                 h={12}
                                 bgGradient="to-br"
-                                gradientFrom="green.500"
-                                gradientTo="blue.500"
+                                gradientFrom="green.600"
+                                gradientTo="blue.600"
                                 borderRadius="xl"
                                 display="flex"
                                 alignItems="center"

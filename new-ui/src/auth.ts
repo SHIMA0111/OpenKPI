@@ -1,9 +1,21 @@
 import Credentials from "next-auth/providers/credentials";
-import NextAuth, { User } from "next-auth";
+import NextAuth, { AuthError, User } from "next-auth";
 import { env } from "./config/env";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { adminAuth } from "./lib/firebase_admin";
 import { authConfig } from "./auth.config";
+import { initializeFirebaseAdmin } from "./lib/firebase/firebase_admin";
+import { FirebaseError } from "firebase/app";
+
+class AuthenticationError extends AuthError {
+    code: string;
+
+    constructor(message: string, code: string) {
+        super();
+        this.message = message;
+        this.name = "AuthenticationError";
+        this.code = code;
+    }
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -27,8 +39,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     );
 
                     const user = userCredential.user;
+
+                    if (!user.emailVerified) {
+                        throw new AuthenticationError("Please verify your email address before logging in.", "auth/email-not-verified");
+                    }
+
                     const idToken = await user.getIdToken();
 
+                    const adminAuth = await initializeFirebaseAdmin();
                     const decodedToken = await adminAuth.verifyIdToken(idToken);
 
                     return {
@@ -37,9 +55,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         name: user.displayName,
                         image: user.photoURL,
                     };
-                } catch (error) {
-                    console.error("Authentication error", error);
-                    return null;
+                } catch (error: any) {
+                    if (error instanceof AuthenticationError) {
+                        throw error;
+                    }
+                    if (error instanceof FirebaseError) {
+                        throw new AuthenticationError("Firebase authentication error", error.code as string);
+                    }
+                    throw new AuthenticationError("An unknown error occurred", "auth/authentication-error");
                 }
             }
         }),

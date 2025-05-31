@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
     Card,
     ClientOnly,
     Container,
+    Dialog,
     Field,
     Fieldset,
     Flex,
@@ -15,7 +16,9 @@ import {
     IconButton,
     Input,
     InputGroup,
-    Link, Skeleton,
+    Link, Portal, Skeleton,
+    Spacer,
+    Spinner,
     Stack,
     Text,
     VStack
@@ -24,9 +27,9 @@ import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiLock} from "react-icons/bi";
 import {LuEye, LuEyeOff, LuLock, LuMail} from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
-import { LoginCredentials } from '@/types/authentication';
-import { useAuthentication } from '@/hooks/use-authentication';
-import { signIn } from 'next-auth/react';
+import { toaster } from '@/components/ui/toaster';
+import { login } from '../lib/login';
+import { firebaseResendVerificationEmailByCreds } from '@/lib/firebase/firebase_register';
 
 function LoginFormContent() {
     const router = useRouter();
@@ -34,8 +37,10 @@ function LoginFormContent() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isResendVerificationEmailLoading, setIsResendVerificationEmailLoading] = useState(false);
+    const [intervalResendVerificationEmail, setIntervalResendVerificationEmail] = useState(0);
 
     const bgGradientFrom = useColorModeValue("gray.50", "gray.900");
     const bgGradientTo = useColorModeValue("gray.100", "gray.800");
@@ -49,24 +54,84 @@ function LoginFormContent() {
         setIsLoading(true);
 
         try {
-            const result = await signIn("credentials", {
-                email, 
-                password,
-                redirect: false,
-            });
+            const result = await login(email, password);
 
             if (result?.error) {
-                setError("Invalid email or password");
+                console.log(result.error);
+                if (result.error.code === "auth/email-not-verified") {
+                    setIsOpen(true);
+                } else if (result.error.code === "auth/invalid-credential") {
+                toaster.create({
+                    title: "Invalid credentials",
+                    description: "Please check your email and password and try again.",
+                    type: "error",
+                    duration: 5000,
+                    closable: true
+                });
+                } else {
+                    toaster.create({
+                        title: "An error occurred. Please try again.",
+                        description: "Please contact support if the problem persists with your account information.",
+                        type: "error",
+                        duration: 5000,
+                        closable: true
+                    });
+                }
             } else {
+                toaster.create({
+                    title: "Login successful",
+                    type: "success",
+                    duration: 5000,
+                    closable: true
+                });
+
                 router.push("/dashboard");
                 router.refresh();
             }
         } catch (error) {
-            setError("An error occurred. Please try again.");
+            console.log(error);
+            toaster.create({
+                title: "An error occurred. Please try again.",
+                type: "error",
+                duration: 5000,
+                closable: true
+            });
         } finally {
-            setIsLoading(true);
+            setIsLoading(false);
         }
     };
+    
+    const handleResendVerificationEmail = async () => {
+        setIsResendVerificationEmailLoading(true);
+        try {
+            await firebaseResendVerificationEmailByCreds(email, password);
+            setIntervalResendVerificationEmail(30);
+            toaster.create({
+                title: "Verification email sent",
+                description: "Please check your email and click the link to verify your account.",
+                type: "success",
+                duration: 5000,
+                closable: true
+            });
+            setIsOpen(false);
+        } catch (error: any) {
+            toaster.create({
+                title: "Failed to resend verification email",
+                description: error.message || "Please try again. If the problem persists, please contact support.",
+                type: "error",
+                duration: 5000,
+                closable: true
+            });
+        } finally {
+            setIsResendVerificationEmailLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (intervalResendVerificationEmail > 0) {
+            setTimeout(() => setIntervalResendVerificationEmail(intervalResendVerificationEmail - 1), 1000);
+        }
+    }, [intervalResendVerificationEmail]);
 
     return (
         <Box
@@ -224,6 +289,49 @@ function LoginFormContent() {
                 <Text textAlign="center" fontSize="xs" color="gray.500" mt={8}>
                     &copy; 2025 SHIMA0111. All rights reserved.
                 </Text>
+                <Dialog.Root lazyMount open={isOpen} placement="center" onOpenChange={(e) => setIsOpen(e.open)}>
+                    <Portal>
+                        <Dialog.Backdrop />
+                        <Dialog.Positioner>
+                            <Dialog.Content>
+                                <Dialog.Header>
+                                    <Dialog.Title>Your account is not verified!!</Dialog.Title>
+                                </Dialog.Header>
+                                <Dialog.Body>
+                                    <Text color={textColor}>
+                                        We've sent you an email to verify your account. 
+                                        <br />
+                                        Please check your email and click the link to verify your account.
+                                    </Text>
+                                    <Spacer h={4} />
+                                    <Button 
+                                        disabled={intervalResendVerificationEmail > 0}
+                                        loading={isResendVerificationEmailLoading} 
+                                        loadingText="Resending verification email..." 
+                                        onClick={handleResendVerificationEmail}
+                                        w="full"
+                                        h={12}
+                                        bgGradient="to-r"
+                                        gradientFrom="blue.500"
+                                        gradientTo="purple.500"
+                                        color="white"
+                                        fontWeight="medium"
+                                        borderRadius="lg"
+                                        _hover={{
+                                            transform: "scale(1.02)",
+                                            background: "linear(to-r, blue.600, purple.600)"
+                                        }}
+                                    >Resend verification email</Button>
+                                    {intervalResendVerificationEmail > 0 ? (
+                                        <Text color={textColor}>
+                                            You can resend the verification email in {intervalResendVerificationEmail} seconds.
+                                        </Text>
+                                    ) : ""}
+                                </Dialog.Body>
+                            </Dialog.Content>
+                        </Dialog.Positioner>
+                    </Portal>
+                </Dialog.Root>
             </Container>
         </Box>
     )

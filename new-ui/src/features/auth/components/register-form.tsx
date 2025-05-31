@@ -6,7 +6,9 @@ import {
     Button,
     Card,
     ClientOnly,
+    CloseButton,
     Container,
+    Dialog,
     Field,
     FieldErrorText,
     Grid,
@@ -14,7 +16,7 @@ import {
     Icon,
     Input,
     InputGroup,
-    Link, Skeleton,
+    Link, Portal, Separator, Skeleton,
     Spacer,
     Stack,
     Text,
@@ -22,33 +24,54 @@ import {
 } from "@chakra-ui/react";
 import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiUser} from "react-icons/bi";
-import {LuCheck, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
+import {LuCheck, LuInfo, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
 import { RegisterCredentials } from '@/types/authentication';
-import { FirebaseError } from 'firebase/app';
-import { toaster } from '@/components/ui/toaster';
+import { useRegister } from '@/hooks/use-register';
+import { useRouter } from 'next/navigation';
 
-function LoginFormContent() {
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [validatePassword, setValidatePassword] = useState(false)
+function RegisterFormContent() {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const router = useRouter();
 
-    const bgGradientFrom = useColorModeValue("gray.50", "gray.900")
-    const bgGradientTo = useColorModeValue("gray.100", "gray.800")
+    const [validatePassword, setValidatePassword] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const cardBg = useColorModeValue("white", "gray.800")
+    const { register } = useRegister();
+
+    const bgGradientFrom = useColorModeValue("gray.50", "gray.900");
+    const bgGradientTo = useColorModeValue("gray.100", "gray.800");
+
+    const cardBg = useColorModeValue("white", "gray.800");
     const textColor = useColorModeValue("gray.600", "gray.300")
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        const credentials: RegisterCredentials = {
+            email,
+            password,
+            firstName,
+            lastName
+        }
+
+        if (await register(credentials)) {
+            setIsOpen(true);
+        };
     }
 
     const handleValidatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         const confirmPassword = e.target.value
         setConfirmPassword(confirmPassword)
         setValidatePassword(password === confirmPassword && password.length > 0 && confirmPassword.length > 0)
+    }
+
+    const handleCloseDialog = (isOpen: boolean) => {
+        setIsOpen(isOpen);
+        router.push("/auth/login");
     }
 
     return (
@@ -99,9 +122,9 @@ function LoginFormContent() {
                     </Card.Header>
                     <Card.Body>
                         <VStack gap={6}>
-                            <Box as="form" onSubmit={handleSubmit} w="full">
+                            <Box as="form" w="full" onSubmit={handleSubmit}>
                                 <Stack gap={4}>
-                                    <Grid templateColumns="repeat(2, 1fr)" gap={3}>
+                                    <Grid templateColumns="1fr 1fr" gap={3}>
                                         <Field.Root>
                                             <Field.Label color={textColor}>
                                                 First Name
@@ -217,7 +240,7 @@ function LoginFormContent() {
                                     <Spacer h={4} />
 
                                     <Button 
-                                        type="submit" 
+                                        type="submit"
                                         w="full" 
                                         h={12}
                                         {...((!validatePassword || !email || !password || !confirmPassword)
@@ -255,25 +278,49 @@ function LoginFormContent() {
                                     Login
                                 </Link>
                             </Text>
+                            <Text fontSize="xs" color={textColor}>
+                                You've never registered with this email address before but you can't register?{" "}
+                                <Link href="/contact" color="blue.500" fontWeight="medium" _hover={{ color: "blue.700", textDecoration: "underline" }}>Contact us</Link>
+                            </Text>
                         </VStack>
                     </Card.Body>
                 </Card.Root>
                 <Text textAlign="center" fontSize="xs" color="gray.500" mt={8}>
                     &copy; 2025 SHIMA0111. All rights reserved.
                 </Text>
+                <Dialog.Root lazyMount open={isOpen} placement="center" onOpenChange={(e) => handleCloseDialog(e.open)}>
+                    <Portal>
+                        <Dialog.Backdrop />
+                        <Dialog.Positioner>
+                            <Dialog.Content>
+                                <Dialog.Header>
+                                    <Dialog.Title>Not completed yet!</Dialog.Title>
+                                    <Dialog.CloseTrigger asChild>
+                                        <CloseButton />
+                                    </Dialog.CloseTrigger>
+                                </Dialog.Header>
+                                <Dialog.Body>
+                                    <Text color={textColor}>
+                                        We've sent you an email to verify your account. Please check your email and click the link to verify your account.
+                                    </Text>
+                                </Dialog.Body>
+                            </Dialog.Content>
+                        </Dialog.Positioner>
+                    </Portal>
+                </Dialog.Root>
             </Container>
         </Box>
     )
 }
 
-export default function LoginForm() {
+export default function RegisterForm() {
     return (
         <ClientOnly fallback={
             <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
                 <Skeleton h="500px" w="400px" borderRadius="xl" />
             </Box>
         }>
-            <LoginFormContent />
+            <RegisterFormContent />
         </ClientOnly>
     )
 }

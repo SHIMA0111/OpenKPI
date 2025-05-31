@@ -1,6 +1,5 @@
-import { getAuth } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { z } from "zod";
+import { initializeFirebaseAuth } from "@/lib/firebase/firebase_auth";
 
 const createEnv = () => {
     const envSchema = z.object({
@@ -8,17 +7,12 @@ const createEnv = () => {
         FIREBASE_AUTH: z.any().optional(),
     });
     
-    if (process.env.NEXT_PUBLIC_AUTH_PROVIDER === "Firebase" && !process.env.NEXT_PUBLIC_FIREBASE_CREDENTIALS) {
-        throw new Error("NEXT_PUBLIC_FIREBASE_CREDENTIALS must be set when using Firebase as authentication provider");
-    }
-
-    const FirebaseCredentials = process.env.NEXT_PUBLIC_FIREBASE_CREDENTIALS ? JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CREDENTIALS) : null;
-    const FirebaseAuth = initializeApp(FirebaseCredentials);
-    const auth = getAuth(FirebaseAuth);
+    
+    const firebaseAuth = initializeFirebaseAuth();
 
     const envVars = {
         AUTH_PROVIDER: process.env.NEXT_PUBLIC_AUTH_PROVIDER,
-        FIREBASE_AUTH: auth,
+        FIREBASE_AUTH: firebaseAuth,
     }
 
     const parsedEnvVars = envSchema.parse(envVars);

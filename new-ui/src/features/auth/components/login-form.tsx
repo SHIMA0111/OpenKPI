@@ -6,6 +6,7 @@ import {
     Button,
     Card,
     ClientOnly,
+    CloseButton,
     Container,
     Dialog,
     Field,
@@ -18,7 +19,6 @@ import {
     InputGroup,
     Link, Portal, Skeleton,
     Spacer,
-    Spinner,
     Stack,
     Text,
     VStack
@@ -57,7 +57,6 @@ function LoginFormContent() {
             const result = await login(email, password);
 
             if (result?.error) {
-                console.log(result.error);
                 if (result.error.code === "auth/email-not-verified") {
                     setIsOpen(true);
                 } else if (result.error.code === "auth/invalid-credential") {
@@ -113,7 +112,6 @@ function LoginFormContent() {
                 duration: 5000,
                 closable: true
             });
-            setIsOpen(false);
         } catch (error: any) {
             toaster.create({
                 title: "Failed to resend verification email",
@@ -296,6 +294,9 @@ function LoginFormContent() {
                             <Dialog.Content>
                                 <Dialog.Header>
                                     <Dialog.Title>Your account is not verified!!</Dialog.Title>
+                                    <Dialog.CloseTrigger asChild>
+                                        <CloseButton />
+                                    </Dialog.CloseTrigger>
                                 </Dialog.Header>
                                 <Dialog.Body>
                                     <Text color={textColor}>

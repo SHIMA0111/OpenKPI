@@ -35,6 +35,7 @@ function RegisterFormContent() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const [validatePassword, setValidatePassword] = useState(false);
@@ -50,6 +51,7 @@ function RegisterFormContent() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
 
         const credentials: RegisterCredentials = {
             email,
@@ -61,6 +63,8 @@ function RegisterFormContent() {
         if (await register(credentials)) {
             setIsOpen(true);
         };
+
+        setIsLoading(false);
     }
 
     const handleValidatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,6 +245,8 @@ function RegisterFormContent() {
 
                                     <Button 
                                         type="submit"
+                                        loading={isLoading}
+                                        loadingText="Registering..."
                                         w="full" 
                                         h={12}
                                         {...((!validatePassword || !email || !password || !confirmPassword)

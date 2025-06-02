@@ -4,7 +4,7 @@ import { signIn } from '@/auth';
 
 export async function login(email: string, password: string) {
     try {
-        const result = await signIn("credentials", {
+        await signIn("credentials", {
             email,
             password,
             redirect: false,
@@ -12,7 +12,6 @@ export async function login(email: string, password: string) {
         
         return { success: true, message: "Login successful" };
     } catch (error: any) {
-        console.log(error);
         if (error.type === "AuthError") {
             return {
                 error: { 

@@ -1,12 +1,12 @@
-import { toaster } from "@/components/ui/toaster";
-import { Avatar, Box, Button, Card, Flex, Icon, Menu, Portal, Text } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
+import { Link, Flex, Portal, Text, Icon, Avatar, Button, Menu } from "@chakra-ui/react";
+import { LuSettings, LuUser } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import { LuLogOut } from "react-icons/lu";
 
-import { LuLogOut, LuSettings, LuUser } from "react-icons/lu";
+import { toaster } from "@/components/ui/toaster";
+import { signOut } from "next-auth/react";
 
-export default function UserDropdown() {
+export function UserDropdown() {
     const router = useRouter();
 
     const firstName = "Taro";

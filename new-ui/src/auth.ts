@@ -62,7 +62,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     if (error instanceof FirebaseError) {
                         throw new AuthenticationError("Firebase authentication error", error.code as string);
                     }
-                    throw new AuthenticationError("An unknown error occurred", "auth/authentication-error");
+                    throw new AuthenticationError(error.message, "auth/authentication-error");
                 }
             }
         }),

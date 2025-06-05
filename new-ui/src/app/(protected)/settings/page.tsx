@@ -1,5 +1,5 @@
-export default function Settings() {
-    return (
-        <div>Settings</div>
-    )
+import Settings from "@/features/settings/components/settings";
+
+export default function SettingsPage() {
+    return <Settings />
 }

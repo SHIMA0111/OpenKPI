@@ -1,7 +1,8 @@
 'use client'
 
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react"
+import { ChakraProvider } from "@chakra-ui/react"
 import { SessionProvider } from "next-auth/react"
+import { system } from "@/config/theme"
 import {
   ColorModeProvider,
   type ColorModeProviderProps,
@@ -11,7 +12,7 @@ import { Toaster } from "./toaster"
 export function Provider(props: ColorModeProviderProps) {
   return (
     <SessionProvider>
-      <ChakraProvider value={defaultSystem}>
+      <ChakraProvider value={system}>
         <ColorModeProvider
             attribute="class"
             defaultTheme="system"

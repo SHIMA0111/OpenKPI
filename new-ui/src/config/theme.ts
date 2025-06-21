@@ -84,6 +84,44 @@ const config = defineConfig({
                         _dark: "#3f3f46",
                     }
                 },
+
+                // Active item background color
+                "active.bg.color": {
+                    value: {
+                        _light: "#eff6ff",
+                        _dark: "#14204a",
+                    }
+                },
+
+                // Active item gradient
+                "active.gradient.from": {
+                    value: {
+                        _light: "#eff6ff",
+                        _dark: "#14204a",
+                    }
+                },
+                "active.gradient.to": {
+                    value: {
+                        _light: "#faf5ff",
+                        _dark: "#2f0553",
+                    }
+                },
+
+                // Active item text color
+                "active.text.color": {
+                    value: {
+                        _light: "#173da6",
+                        _dark: "#a3cfff",
+                    }
+                },
+
+                // Footer text color
+                "footer.text.color": {
+                    value: {
+                        _light: "#71717a",
+                        _dark: "#a1a1aa",
+                    }
+                },
             }
         }
     },

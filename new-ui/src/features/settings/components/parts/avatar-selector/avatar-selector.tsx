@@ -118,10 +118,11 @@ export default function AvatarSelector({ name, initialImageUrl, onAvatarChange, 
                                             rounded="lg" 
                                             border="2px solid" 
                                             cursor="pointer" 
-                                            borderColor={selectedAvatar == option.id ? "blue.500" : "gray.200"}
-                                            bgColor={selectedAvatar == option.id ? "blue.50" : "transparent"}
+                                            borderColor={selectedAvatar == option.id ? "active.text.color" : "gray.200"}
+                                            bgColor={selectedAvatar == option.id ? "active.bg.color" : "transparent"}
                                             _hover={{
-                                                borderColor: selectedAvatar == option.id ? "transparent" : "gray.300",
+                                                borderColor: selectedAvatar == option.id ? undefined : "gray.300",
+                                                bgColor: selectedAvatar == option.id ? undefined : "button.bg.color.hover",
                                             }}
                                             onClick={() => handleSelector(option.id)}
                                         >

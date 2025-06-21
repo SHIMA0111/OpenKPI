@@ -9,27 +9,24 @@ import {
     CloseButton,
     Container,
     Dialog,
-    Field,
     Fieldset,
     Flex,
     Heading,
     Icon,
     IconButton,
-    Input,
-    InputGroup,
     Link, Portal, Skeleton,
     Spacer,
     Stack,
     Text,
     VStack
 } from "@chakra-ui/react";
-import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiLock} from "react-icons/bi";
-import {LuEye, LuEyeOff, LuLock, LuMail} from 'react-icons/lu';
+import {LuEye, LuEyeClosed, LuLock, LuMail} from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
 import { toaster } from '@/components/ui/toaster';
 import { login } from '../lib/login';
 import { firebaseResendVerificationEmailByCreds } from '@/lib/firebase/firebase_register';
+import LabelInput from '@/components/ui/label-input';
 
 function LoginFormContent() {
     const router = useRouter();
@@ -41,12 +38,6 @@ function LoginFormContent() {
     const [isOpen, setIsOpen] = useState(false);
     const [isResendVerificationEmailLoading, setIsResendVerificationEmailLoading] = useState(false);
     const [intervalResendVerificationEmail, setIntervalResendVerificationEmail] = useState(0);
-
-    const bgGradientFrom = useColorModeValue("gray.50", "gray.900");
-    const bgGradientTo = useColorModeValue("gray.100", "gray.800");
-
-    const cardBg = useColorModeValue("white", "gray.800");
-    const textColor = useColorModeValue("gray.600", "gray.300");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -135,8 +126,8 @@ function LoginFormContent() {
         <Box
             minH="100vh"
             bgGradient="to-br"
-            gradientFrom={bgGradientFrom}
-            gradientTo={bgGradientTo}
+            gradientFrom="screen.bg.gradient.from"
+            gradientTo="screen.bg.gradient.to"
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -144,7 +135,7 @@ function LoginFormContent() {
         >
             <Container maxW="md">
                 <Card.Root
-                    bgColor={cardBg}
+                    bgColor="card.bg.color"
                     shadow="2xl"
                     borderRadius="2xl"
                     border="none"
@@ -169,12 +160,11 @@ function LoginFormContent() {
                             <Heading
                                 size="xl"
                                 bgClip="text"
+                                color="text.color"
                             >
-                                <Text as="span" color={textColor}>
-                                    Login
-                                </Text>
+                                Login
                             </Heading>
-                            <Text color={textColor}>Please sign-in to your account!</Text>
+                            <Text color="text.color">Please sign-in to your account!</Text>
                         </VStack>
                     </Card.Header>
                     <Card.Body>
@@ -183,59 +173,54 @@ function LoginFormContent() {
                                 <Stack gap={4}>
                                     <Fieldset.Root>
                                         <Fieldset.Content>
-
-                                            <Field.Root required>
-                                                <Field.Label color={textColor}>
-                                                    Email
-                                                </Field.Label>
-                                                <InputGroup startElement={<LuMail color="gray.400" />}>
-                                                    <Input 
-                                                        type="email" 
-                                                        placeholder="taro@example.com" 
-                                                        value={email}
-                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                                                        h={12}
-                                                        borderColor="gray.200"
-                                                        focusRingColor="blue.500"
-                                                        _focus={{
-                                                            borderColor: "blue.500",
-                                                            boxShadow: "0 0 0 1px blue.500",
-                                                        }}
-                                                    />
-                                                </InputGroup>
-                                            </Field.Root>
-
-                                            <Field.Root required>
-                                                <Field.Label color={textColor}>Password</Field.Label>
-                                                <InputGroup 
-                                                    startElement={<LuLock color="gray.400" />} 
-                                                    endElement={
-                                                        <IconButton
-                                                            aria-label={showPassword ? "Hide password" : "Show password"}
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            onClick={() => setShowPassword(!showPassword)}
-                                                            color="gray.400"
-                                                            _hover={{ color: "gray.600" }}
-                                                        >
-                                                            { showPassword ? <LuEye /> : <LuEyeOff /> }
-                                                        </IconButton>
-                                                    }>
-                                                    <Input 
-                                                        type={ showPassword ? "text" : "password" } 
-                                                        placeholder="Your password"
-                                                        value={password}
-                                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                                                        h={12}
-                                                        borderColor="gray.200"
-                                                        focusRingColor="blue.500" 
-                                                        _focus={{
-                                                            borderColor: "blue.500",
-                                                            boxShadow: "0 0 0 1px blue.500",
-                                                        }}
-                                                    />
-                                                </InputGroup>
-                                            </Field.Root>
+                                            <LabelInput 
+                                                label="Email" 
+                                                required 
+                                                startElement={<LuMail color="gray.400" />}
+                                                type="email"
+                                                placeholder="taro@example.com"
+                                                value={email}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                                h={12}
+                                                border="1px solid"
+                                                borderColor="gray.100"
+                                                focusRingColor="blue.500"
+                                                _focus={{
+                                                    borderColor: "blue.500",
+                                                    boxShadow: "0 0 0 1px blue.500",
+                                                }}
+                                                disabledRequiredIndicator
+                                            />
+                                            <LabelInput 
+                                                label="Password"
+                                                required
+                                                startElement={<LuLock color="gray.400" />}
+                                                endElement={
+                                                    <IconButton
+                                                        aria-label={showPassword ? "Hide password" : "Show password"}
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => setShowPassword(!showPassword)}
+                                                        color="gray.400"
+                                                        _hover={{ color: "gray.600" }}
+                                                    >
+                                                        { showPassword ? <LuEye /> : <LuEyeClosed /> }
+                                                    </IconButton>
+                                                }
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder={showPassword ? "Your password" : "********"}
+                                                value={password}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                                h={12}
+                                                border="1px solid"
+                                                borderColor="gray.100"
+                                                focusRingColor="blue.500"
+                                                _focus={{
+                                                    borderColor: "blue.500",
+                                                    boxShadow: "0 0 0 1px blue.500",
+                                                }}
+                                                disabledRequiredIndicator
+                                            />
                                         </Fieldset.Content>
                                         
                                         <Flex justify="flex-end">
@@ -270,7 +255,7 @@ function LoginFormContent() {
                                 </Stack>
                             </Box>
 
-                            <Text textAlign="center" fontSize="sm" color={textColor}>
+                            <Text textAlign="center" fontSize="sm" color="text.color">
                                 Don&#39;t have an account?{" "}
                                 <Link
                                     href="/auth/register"
@@ -299,7 +284,7 @@ function LoginFormContent() {
                                     </Dialog.CloseTrigger>
                                 </Dialog.Header>
                                 <Dialog.Body>
-                                    <Text color={textColor}>
+                                    <Text color="text.color">
                                         We've sent you an email to verify your account. 
                                         <br />
                                         Please check your email and click the link to verify your account.
@@ -324,7 +309,7 @@ function LoginFormContent() {
                                         }}
                                     >Resend verification email</Button>
                                     {intervalResendVerificationEmail > 0 ? (
-                                        <Text color={textColor}>
+                                        <Text color="text.color">
                                             You can resend the verification email in {intervalResendVerificationEmail} seconds.
                                         </Text>
                                     ) : ""}

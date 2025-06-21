@@ -9,25 +9,21 @@ import {
     CloseButton,
     Container,
     Dialog,
-    Field,
-    FieldErrorText,
     Grid,
     Heading,
     Icon,
-    Input,
-    InputGroup,
-    Link, Portal, Separator, Skeleton,
+    Link, Portal, Skeleton,
     Spacer,
     Stack,
     Text,
     VStack
 } from "@chakra-ui/react";
-import {useColorModeValue} from "@/components/ui/color-mode";
 import {BiUser} from "react-icons/bi";
-import {LuCheck, LuInfo, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
+import {LuCheck, LuLock, LuMail, LuUser, LuX} from 'react-icons/lu';
 import { RegisterCredentials } from '@/types/authentication';
 import { useRegister } from '@/hooks/use-register';
 import { useRouter } from 'next/navigation';
+import LabelInput from '@/components/ui/label-input';
 
 function RegisterFormContent() {
     const [firstName, setFirstName] = useState("");
@@ -42,12 +38,6 @@ function RegisterFormContent() {
     const [isOpen, setIsOpen] = useState(false);
 
     const { register } = useRegister();
-
-    const bgGradientFrom = useColorModeValue("gray.50", "gray.900");
-    const bgGradientTo = useColorModeValue("gray.100", "gray.800");
-
-    const cardBg = useColorModeValue("white", "gray.800");
-    const textColor = useColorModeValue("gray.600", "gray.300")
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -82,8 +72,8 @@ function RegisterFormContent() {
         <Box
             minH="100vh"
             bgGradient="to-br"
-            gradientFrom={bgGradientFrom}
-            gradientTo={bgGradientTo}
+            gradientFrom="screen.bg.gradient.from"
+            gradientTo="screen.bg.gradient.to"
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -91,7 +81,7 @@ function RegisterFormContent() {
         >
             <Container maxW="md">
                 <Card.Root
-                    bgColor={cardBg}
+                    bgColor="card.bg.color"
                     shadow="2xl"
                     borderRadius="2xl"
                     border="none"
@@ -117,11 +107,11 @@ function RegisterFormContent() {
                                 size="xl"
                                 bgClip="text"
                             >
-                                <Text as="span" color={textColor}>
+                                <Text as="span" color="text.color">
                                     Create Account
                                 </Text>
                             </Heading>
-                            <Text color={textColor}>Let's create your account and start your journey!</Text>
+                            <Text color="text.color">Let's create your account and start your journey!</Text>
                         </VStack>
                     </Card.Header>
                     <Card.Body>
@@ -129,117 +119,89 @@ function RegisterFormContent() {
                             <Box as="form" w="full" onSubmit={handleSubmit}>
                                 <Stack gap={4}>
                                     <Grid templateColumns="1fr 1fr" gap={3}>
-                                        <Field.Root>
-                                            <Field.Label color={textColor}>
-                                                First Name
-                                            </Field.Label>
-                                            <InputGroup startElement={<LuUser color="gray.400" />}>
-                                                <Input 
-                                                    type="text" 
-                                                    placeholder="Taro" 
-                                                    value={firstName}
-                                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
-                                                    h={12}
-                                                    borderColor="gray.200"
-                                                    focusRingColor="blue.500"
-                                                    _focus={{
-                                                        borderColor: "blue.500",
-                                                        boxShadow: "0 0 0 1px blue.500",
-                                                    }}
-                                                />
-                                            </InputGroup>
-                                        </Field.Root>
-                                        <Field.Root>
-                                            <Field.Label color={textColor}>
-                                                Last Name
-                                            </Field.Label>
-                                            <InputGroup startElement={<LuUser color="gray.400" />}>
-                                                <Input 
-                                                    type="text" 
-                                                    placeholder="Yamada" 
-                                                    value={lastName}
-                                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
-                                                    h={12}
-                                                    borderColor="gray.200"
-                                                    focusRingColor="blue.500"
-                                                    _focus={{
-                                                        borderColor: "blue.500",
-                                                        boxShadow: "0 0 0 1px blue.500",
-                                                    }}
-                                                />
-                                            </InputGroup>
-                                        </Field.Root>
+                                        <LabelInput 
+                                            label="First Name"
+                                            startElement={<LuUser color="gray.400" />}
+                                            type="text"
+                                            placeholder="Taro"
+                                            value={firstName}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)}
+                                            h={12}
+                                            borderColor="gray.200"
+                                            focusRingColor="blue.500"
+                                            _focus={{
+                                                borderColor: "blue.500",
+                                                boxShadow: "0 0 0 1px blue.500",
+                                            }}
+                                        />
+                                        <LabelInput 
+                                            label="Last Name"
+                                            startElement={<LuUser color="gray.400" />}
+                                            type="text"
+                                            placeholder="Yamada"
+                                            value={lastName}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)}
+                                            h={12}
+                                            borderColor="gray.200"
+                                            focusRingColor="blue.500"
+                                            _focus={{
+                                                borderColor: "blue.500",
+                                                boxShadow: "0 0 0 1px blue.500",
+                                            }}
+                                        />
                                     </Grid>
-                                    <Field.Root required>
-                                        <Field.Label color={textColor}>
-                                            Email
-                                            <Field.RequiredIndicator />
-                                        </Field.Label>
-                                        <InputGroup startElement={<LuMail color="gray.400" />}>
-                                            <Input 
-                                                type="email" 
-                                                placeholder="taro@example.com" 
-                                                value={email}
-                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                                                h={12}
-                                                borderColor="gray.200"
-                                                focusRingColor="blue.500"
-                                                _focus={{
-                                                    borderColor: "blue.500",
-                                                    boxShadow: "0 0 0 1px blue.500",
-                                                }}
-                                            />
-                                        </InputGroup>
-                                    </Field.Root>
+                                    <LabelInput
+                                        label="Email"
+                                        required
+                                        startElement={<LuMail color="gray.400" />}
+                                        type="email"
+                                        placeholder="taro@example.com"
+                                        value={email}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                        h={12}
+                                        borderColor="gray.200"
+                                        focusRingColor="blue.500"
+                                        _focus={{
+                                            borderColor: "blue.500",
+                                            boxShadow: "0 0 0 1px blue.500",
+                                        }}
+                                    />
+                                    
+                                    <LabelInput 
+                                        label="Password"
+                                        required
+                                        startElement={<LuLock color="gray.400" />}
+                                        type="password"
+                                        placeholder="Your password"
+                                        value={password}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                        h={12}
+                                        borderColor="gray.200"
+                                        focusRingColor="blue.500"
+                                        _focus={{
+                                            borderColor: "blue.500",
+                                            boxShadow: "0 0 0 1px blue.500",
+                                        }}
+                                    />
 
-                                    <Field.Root required>
-                                        <Field.Label color={textColor}>
-                                            Password
-                                            <Field.RequiredIndicator />
-                                        </Field.Label>
-                                        <InputGroup 
-                                            startElement={<LuLock color="gray.400" />} 
-                                        >
-                                            <Input 
-                                                type="password"
-                                                placeholder="Your password"
-                                                value={password}
-                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                                                h={12}
-                                                borderColor="gray.200"
-                                                focusRingColor="blue.500" 
-                                                _focus={{
-                                                    borderColor: "blue.500",
-                                                    boxShadow: "0 0 0 1px blue.500",
-                                                }}
-                                            />
-                                        </InputGroup>
-                                    </Field.Root>
-
-                                    <Field.Root required invalid={!validatePassword}>
-                                        <Field.Label color={textColor}>
-                                            Confirm Password
-                                            <Field.RequiredIndicator />
-                                        </Field.Label>
-                                        <InputGroup 
-                                            startElement={validatePassword ? <LuCheck color="gray.400" /> : <LuX color="gray.400" />} 
-                                        >
-                                            <Input 
-                                                type="password"
-                                                placeholder="Your password"
-                                                value={confirmPassword}
-                                                onChange={handleValidatePassword}
-                                                h={12}
-                                                borderColor={validatePassword ? "gray.200" : "red.500"}
-                                                focusRingColor="blue.500" 
-                                                _focus={{
-                                                    borderColor: "blue.500",
-                                                    boxShadow: "0 0 0 1px blue.500",
-                                                }}
-                                            />
-                                        </InputGroup>
-                                        <FieldErrorText>Password does not match</FieldErrorText>
-                                    </Field.Root>
+                                    <LabelInput 
+                                        label="Confirm Password"
+                                        required
+                                        invalid={!validatePassword}
+                                        invalidMessage="Password does not match"
+                                        startElement={validatePassword ? <LuCheck color="gray.400" /> : <LuX color="gray.400" />}
+                                        type="password"
+                                        placeholder="Your password"
+                                        value={confirmPassword}
+                                        onChange={handleValidatePassword}
+                                        h={12}
+                                        borderColor={validatePassword ? "gray.200" : "red.500"}
+                                        focusRingColor="blue.500"
+                                        _focus={{
+                                            borderColor: "blue.500",
+                                            boxShadow: "0 0 0 1px blue.500",
+                                        }}
+                                    />
                                     
                                     <Spacer h={4} />
 
@@ -273,7 +235,7 @@ function RegisterFormContent() {
                                 </Stack>
                             </Box>
 
-                            <Text textAlign="center" fontSize="sm" color={textColor}>
+                            <Text textAlign="center" fontSize="sm" color="text.color">
                                 Already have an account?{" "}
                                 <Link
                                     href="/auth/login"
@@ -284,7 +246,7 @@ function RegisterFormContent() {
                                     Login
                                 </Link>
                             </Text>
-                            <Text fontSize="xs" color={textColor}>
+                            <Text fontSize="xs" color="text.color">
                                 You've never registered with this email address before but you can't register?{" "}
                                 <Link href="/contact" color="blue.500" fontWeight="medium" _hover={{ color: "blue.700", textDecoration: "underline" }}>Contact us</Link>
                             </Text>
@@ -306,7 +268,7 @@ function RegisterFormContent() {
                                     </Dialog.CloseTrigger>
                                 </Dialog.Header>
                                 <Dialog.Body>
-                                    <Text color={textColor}>
+                                    <Text color="text.color">
                                         We've sent you an email to verify your account. Please check your email and click the link to verify your account.
                                     </Text>
                                 </Dialog.Body>

@@ -23,6 +23,69 @@ const config = defineConfig({
                 }
             },
         },
+        semanticTokens: {
+            colors: {
+                // General screen background color
+                "screen.bg.color": {
+                    value: {
+                        _light: "#fafafa",
+                        _dark: "#18181b",
+                    }
+                },
+                // General border color
+                "border.color": {
+                    value: {
+                        _light: "#e4e4e7",
+                        _dark: "#3f3f46",
+                    }
+                },
+
+                // Auth screen background gradient
+                "screen.bg.gradient.from": {
+                    value: {
+                        _light: "#fafafa",
+                        _dark: "#18181b",
+                    }
+                },
+                "screen.bg.gradient.to": {
+                    value: {
+                        _light: "#f4f4f5",
+                        _dark: "#27272a",
+                    }
+                },
+
+                // General text color
+                "text.color": {
+                    value: {
+                        _light: "#27272a",
+                        _dark: "#e4e4e7",
+                    }
+                },
+
+                // Card background color
+                "card.bg.color": {
+                    value: {
+                        _light: "white",
+                        _dark: "#27272a",
+                    }
+                },
+
+                // Button background color
+                "button.bg.color": {
+                    value: {
+                        _light: "#fafafa",
+                        _dark: "#27272a",
+                    }
+                },
+                // Button hover background color
+                "button.bg.color.hover": {
+                    value: {
+                        _light: "#f4f4f5",
+                        _dark: "#3f3f46",
+                    }
+                },
+            }
+        }
     },
 });
 

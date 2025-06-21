@@ -34,30 +34,25 @@ const userData = [
 ]
 
 export default function Dashboard() {
-    const bgColor = useColorModeValue("gray.50", "gray.900");
-    const textColor = useColorModeValue("gray.800", "gray.200");
-    const borderColor = useColorModeValue("gray.200", "gray.700");
-    const cardBgColor = useColorModeValue("white", "gray.800");
-    const hoverBgColor = useColorModeValue("gray.100", "gray.700");
-
     return (
-        <Box h="100%" spaceY={6} p={6} bgColor={bgColor}>
+        <Box h="100%" spaceY={6} p={6} bgColor="screen.bg.color">
             <Flex align="center" justify="space-between">
                 <Box>
-                    <Heading as="h2" textStyle="2xl" fontWeight="bold" color={textColor}>
+                    <Heading as="h2" textStyle="2xl" fontWeight="bold" color="text.color">
                         Summary
                     </Heading>
-                    <Text color={textColor}>
-                        Let's check your business key performance indicators!
+                    <Text color="text.color">
+                        Let&#39;s check your business key performance indicators!
                     </Text>
                 </Box>
                 <Flex align="center" spaceX={3}>
                     <Button 
                         variant="outline" 
                         size="sm"
-                        color={textColor}
+                        color="text.color"
+                        bgColor="button.bg.color"
                         _hover={{
-                            bgColor: hoverBgColor,
+                            bgColor: "button.bg.color.hover",
                         }}
                     >
                         <Icon as={LuCalendar} mr={2} h={4} w={4} />
@@ -81,10 +76,10 @@ export default function Dashboard() {
 
             <Grid gridTemplateColumns={{ md: "repeat(2, minmax(0, 1fr))", xl: "repeat(4, minmax(0, 1fr))"}} gap={4}>
                 <GridItem>
-                    <Card.Root bgColor={cardBgColor} shadow="sm" border="none">
+                    <Card.Root bgColor="card.bg.color" shadow="sm" border="none">
                         <Card.Body p={6}>
                             <Flex justify="space-between" align="center" mb={4}>
-                                <Text fontSize="sm" fontWeight="medium" color={textColor}>Total Sales</Text>
+                                <Text fontSize="sm" fontWeight="medium" color="text.color">Total Sales</Text>
                                 <Box 
                                     bgColor="blue.300"
                                     borderRadius="md" 
@@ -96,7 +91,7 @@ export default function Dashboard() {
                                     <Icon as={LuDollarSign} h={5} w={5} color="blue.600" />
                                 </Box>
                             </Flex>
-                            <Text textStyle="3xl" fontWeight="bold" color={textColor}>
+                            <Text textStyle="3xl" fontWeight="bold" color="text.color">
                                 <FormatNumber value={123456789} />
                                 <Text as="span" fontSize="sm" color="gray.500">
                                     USD
@@ -107,7 +102,7 @@ export default function Dashboard() {
                                 <Text>
                                     +12.5%
                                 </Text>
-                                <Text as="span" fontSize="sm" color={textColor} ml={1}>
+                                <Text as="span" fontSize="sm" color="text.color" ml={1}>
                                     from last month
                                 </Text>
                             </Flex>
@@ -133,13 +128,13 @@ export default function Dashboard() {
                 </Tabs.List>
                 <Tabs.Content value="summary">
                     <Grid gap={6} gridTemplateColumns={{ md: "repeat(2, minmax(0, 1fr))"}}>
-                        <Card.Root bgColor={cardBgColor} border="none" shadow="sm">
+                        <Card.Root bgColor="card.bg.color" border="none" shadow="sm">
                             <Card.Body p={6}>
                                 <Box mb={4}>
                                     <Heading as="h3" textStyle="lg" fontWeight="semibold">
                                         Sales Transition
                                     </Heading>
-                                    <Text color={textColor} textStyle="sm">
+                                    <Text color="text.color" textStyle="sm">
                                         Past 12 months sales data
                                     </Text>
                                 </Box>
@@ -157,7 +152,7 @@ export default function Dashboard() {
                                             <Tooltip content={({ active, payload, label }: any) => {
                                                                 if (active && payload && payload.length) {
                                                                     return (
-                                                                        <Box bgColor={cardBgColor} p={3} border="1px solid" borderColor={borderColor} rounded="lg" shadow="lg">
+                                                                        <Box bgColor="card.bg.color" p={3} border="1px solid" borderColor="border.color" rounded="lg" shadow="lg">
                                                                             <Text fontWeight="medium">{label}</Text>
                                                                             {payload.map((entry: any, index: number) => {
                                                                                 return (
@@ -181,11 +176,13 @@ export default function Dashboard() {
                             </Card.Body>
                         </Card.Root>
 
-                        <Card.Root bgColor={cardBgColor} border="none" shadow="sm">
+                        <Card.Root bgColor="card.bg.color" border="none" shadow="sm">
                             <Card.Body p={6}>
                                 <Box mb={4}>
-                                    <Heading as="h3" textStyle="lg" fontWeight="semibold">User Analytics</Heading>
-                                    <Text color={textColor} textStyle="sm">
+                                    <Heading as="h3" textStyle="lg" fontWeight="semibold">
+                                        User Analytics
+                                    </Heading>
+                                    <Text color="text.color" textStyle="sm">
                                         Active users trends
                                     </Text>
                                 </Box>
@@ -204,9 +201,9 @@ export default function Dashboard() {
                                                 content={({ active, payload, label }: any) => {
                                                     if (active && payload && payload.length) {
                                                         return (
-                                                            <Box bgColor={cardBgColor} p={3} border="1px solid" borderColor={borderColor} rounded="lg" shadow="lg">
+                                                            <Box bgColor="card.bg.color" p={3} border="1px solid" borderColor="border.color" rounded="lg" shadow="lg">
                                                                 <Text fontWeight="medium">{label}</Text>
-                                                                <Text color={textColor} textStyle="sm">
+                                                                <Text color="text.color" textStyle="sm">
                                                                     Users: {payload[0].value.toLocaleString()}
                                                                 </Text>
                                                             </Box>
@@ -224,15 +221,15 @@ export default function Dashboard() {
                     </Grid>
                 </Tabs.Content>
                 <Tabs.Content value="analytics">
-                    <Flex h="400px" bgColor={cardBgColor} justify="center" align="center" border="1px solid" borderColor={borderColor} rounded="lg">
-                        <Text color={textColor}>
+                    <Flex h="400px" bgColor="card.bg.color" justify="center" align="center" border="1px solid" borderColor="border.color" rounded="lg">
+                        <Text color="text.color">
                             The analytics content will be here.
                         </Text>
                     </Flex>
                 </Tabs.Content>
                 <Tabs.Content value="reports">
-                    <Flex h="400px" bgColor={cardBgColor} justify="center" align="center" border="1px solid" borderColor={borderColor} rounded="lg">
-                        <Text color={textColor}>
+                    <Flex h="400px" bgColor="card.bg.color" justify="center" align="center" border="1px solid" borderColor="border.color" rounded="lg">
+                        <Text color="text.color">
                             The reports content will be here.
                         </Text>
                     </Flex>

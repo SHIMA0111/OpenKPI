@@ -3,6 +3,7 @@ import SettingCard from "./parts/setting-card";
 import { Box, Field, Grid, NativeSelect, Flex } from "@chakra-ui/react";
 import AvatarSelector from "./parts/avatar-selector";
 import LabelInput from "@/components/ui/label-input";
+import LabelSelect from "@/components/ui/label-select";
 
 interface BasicSettingsCardProps {
     firstName: string;
@@ -61,43 +62,38 @@ export default function BasicSettingsCard(props: BasicSettingsCardProps) {
             <LabelInput startElement={<LuMail />} label="Email" value={email} onChange={(e) => onEmailChange(e.target.value)} />
             <LabelInput startElement={<LuBuilding />} label="Company" value={company} onChange={(e) => onCompanyChange(e.target.value)} />
             
-            <Field.Root spaceY={2}>
-                <Field.Label>Language</Field.Label>
-                <NativeSelect.Root>
-                    <NativeSelect.Field value={language} onChange={(e) => onLanguageChange(e.target.value as "en" | "ja" | "ko")}>
-                        <option value="en">English</option>
-                        <option value="ja">日本語</option>
-                        <option value="ko">한국어</option>
-                    </NativeSelect.Field>
-                </NativeSelect.Root>
-            </Field.Root>
-
+            <LabelSelect
+                label="Language"
+                options={[
+                    { label: "English", value: "en" },
+                    { label: "日本語", value: "ja" },
+                    { label: "한국어", value: "ko" },
+                ]}
+                value={language}
+                onValueChange={(value) => onLanguageChange(value as "en" | "ja" | "ko")}
+            />
+            
             <Grid templateColumns="repeat(2, minmax(0, 1fr))" gap={3}>
-                <Box spaceY={2}>
-                    <Field.Root>
-                        <Field.Label>Timezone</Field.Label>
-                        <NativeSelect.Root>
-                            <NativeSelect.Field value={timezone} onChange={(e) => onTimezoneChange(e.target.value as "Asia/Tokyo" | "America/New_York" | "Europe/London" | "UTC")}>
-                                <option value="Asia/Tokyo">Asia/Tokyo</option>
-                                <option value="America/New_York">America/New_York</option>
-                                <option value="Europe/London">Europe/London</option>
-                                <option value="UTC">UTC</option>
-                            </NativeSelect.Field>
-                        </NativeSelect.Root>
-                    </Field.Root>
-                </Box>
-                <Box spaceY={2}>
-                    <Field.Root>
-                        <Field.Label>Theme</Field.Label>
-                        <NativeSelect.Root>
-                            <NativeSelect.Field value={theme} onChange={(e) => onThemeChange(e.target.value as "light" | "dark" | "system")}>
-                                <option value="light">Light</option>
-                                <option value="dark">Dark</option>
-                                <option value="system">System</option>
-                            </NativeSelect.Field>
-                        </NativeSelect.Root>
-                    </Field.Root>
-                </Box>
+                <LabelSelect 
+                    label="Timezone" 
+                    options={[
+                        { label: "Asia/Tokyo", value: "Asia/Tokyo" },
+                        { label: "America/New_York", value: "America/New_York" },
+                        { label: "Europe/London", value: "Europe/London" },
+                        { label: "UTC", value: "UTC" },
+                    ]} 
+                    value={timezone} 
+                    onValueChange={(value) => onTimezoneChange(value as "Asia/Tokyo" | "America/New_York" | "Europe/London" | "UTC")} />
+
+                <LabelSelect
+                    label="Theme"
+                    options={[
+                        { label: "Light", value: "light" },
+                        { label: "Dark", value: "dark" },
+                        { label: "System", value: "system" },
+                    ]}
+                    value={theme}
+                    onValueChange={(value) => onThemeChange(value as "light" | "dark" | "system")} />
             </Grid>
         </SettingCard>
     )

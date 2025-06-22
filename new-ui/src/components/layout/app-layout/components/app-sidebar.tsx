@@ -5,6 +5,7 @@ import { BiBarChart } from "react-icons/bi";
 import { LuSettings } from "react-icons/lu";
 
 import { usePathname, useRouter } from "next/navigation";
+import Copyright from "@/components/ui/copyright/copyright";
 
 export function AppSidebar() {
     const router = useRouter();
@@ -83,9 +84,7 @@ export function AppSidebar() {
                 </Box>
             </Box>
             <Box as="footer" px={1}  py={2}textAlign="center">
-                <Text textStyle="xs" fontWeight="medium" color="footer.text.color">
-                    &copy; {new Date().getFullYear()} SHIMA0111. All rights reserved.
-                </Text>
+                <Copyright />
             </Box>
         </Flex>
     )

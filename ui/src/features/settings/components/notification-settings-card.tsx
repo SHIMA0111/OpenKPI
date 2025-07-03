@@ -1,5 +1,5 @@
 import { LuBell } from "react-icons/lu";
-import SettingCard from "./parts/setting-card";
+import { SettingCard } from "@/components/ui/setting-card";
 import LabelSwitch from "@/components/ui/label-switch";
 
 interface NotificationSettingsCardProps {

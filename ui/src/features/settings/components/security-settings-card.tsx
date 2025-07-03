@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import SettingCard from "./parts/setting-card";
+import { SettingCard } from "@/components/ui/setting-card";
 import { LuShield } from "react-icons/lu";
 
 interface SecuritySettingsCardProps {

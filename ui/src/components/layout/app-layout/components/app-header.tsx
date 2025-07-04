@@ -1,9 +1,6 @@
-import { Box, Flex, Heading, Icon } from "@chakra-ui/react";
-import { BiBarChart } from "react-icons/bi";
-
+import { Flex, Heading } from "@chakra-ui/react";
+import { AppLogo } from "@/components/ui/app-logo";
 import { UserDropdown } from "./user-dropdown";
-
-
 
 export function AppHeader() {
     return (
@@ -21,23 +18,12 @@ export function AppHeader() {
                 align="center" 
                 gap={3}
             >
-                <Box 
-                    bgGradient="to-br" 
-                    gradientFrom="blue.600" 
-                    gradientTo="purple.600"
-                    p={2}
-                    borderRadius="md"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <Icon as={BiBarChart} w={5} h={5} color="white" />
-                </Box>
+                <AppLogo />
                 <Heading as="h1" size="xl" fontWeight="semibold" color="text.color">Dashboard</Heading>
             </Flex>
             <Flex align="center" gap={3}>
                 <UserDropdown />
             </Flex>
         </Flex>
-    )
+    );
 }

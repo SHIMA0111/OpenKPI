@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite'
+import React from 'react'
+import { Provider } from '../src/components/ui/provider'
 
 const preview: Preview = {
   parameters: {
@@ -16,6 +18,9 @@ const preview: Preview = {
       test: 'todo'
     }
   },
+  decorators: [
+    (Story) => React.createElement(Provider, {}, React.createElement(Story)),
+  ],
 };
 
 export default preview;

@@ -1,7 +1,7 @@
 import { LuBuilding, LuGlobe, LuMail } from "react-icons/lu";
-import SettingCard from "./parts/setting-card";
+import { SettingCard } from "@/components/ui/setting-card";
 import { Box, Field, Grid, NativeSelect, Flex } from "@chakra-ui/react";
-import AvatarSelector from "./parts/avatar-selector";
+import { AvatarSelector } from "@/components/ui/avatar-selector";
 import LabelInput from "@/components/ui/label-input";
 import LabelSelect from "@/components/ui/label-select";
 
